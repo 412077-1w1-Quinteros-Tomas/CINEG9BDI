@@ -1,0 +1,72 @@
+body {
+  min-height: 100vh;
+  background-image: url("img/3968084.webp");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  color: white;
+}
+
+/* 🔸 Texto del menú superior */
+.texto-elegante {
+  display: inline-block;
+  position: relative;
+  color: #ffffff;
+  font-size: 1.8rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: all 0.4s ease;
+  letter-spacing: 1px;
+  text-decoration: none;
+}
+
+.texto-elegante::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  transform: translate(-50%, -50%) scale(0);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0) 70%);
+  transition: transform 0.5s ease;
+}
+
+.texto-elegante:hover::after {
+  transform: translate(-50%, -50%) scale(1.5);
+}
+
+.texto-elegante:hover {
+  color: #ffffff;
+  text-shadow: 0 0 10px #ffffff, 0 0 20px #ffffff;
+}
+
+/* 🔹 Tarjetas de responsables */
+.responsable-card {
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 15px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.responsable-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 20px rgba(0, 255, 179, 0.3);
+}
+
+.responsable-card h2 {
+  font-size: 1.4rem;
+  color: #222;
+  margin-bottom: 0.5rem;
+}
+
+.responsable-card p {
+  font-size: 1.1rem;
+  color: #555;
+}
+

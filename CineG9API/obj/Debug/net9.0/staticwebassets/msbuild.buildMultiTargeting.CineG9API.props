@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\CineG9API.props" />
+</Project>
