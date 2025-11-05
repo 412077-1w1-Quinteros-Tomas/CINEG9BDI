@@ -1,0 +1,1672 @@
+CREATE DATABASE BDIG9CINE
+GO
+USE BDIG9CINE
+GO
+
+
+CREATE TABLE [calles] (
+  [id_calle] int PRIMARY KEY,
+  [nombre] varchar(100) NOT NULL
+)
+GO
+
+CREATE TABLE [paises] (
+  [codigo_pais] varchar(10) PRIMARY KEY,
+  [descripcion] varchar(100) NOT NULL
+)
+GO
+
+CREATE TABLE [provincias] (
+  [id_provincia] int PRIMARY KEY IDENTITY(1, 1),
+  [descripcion] varchar(100) NOT NULL,
+  [codigo_pais] varchar(10) NOT NULL
+)
+GO
+
+CREATE TABLE [ciudades] (
+  [id_ciudad] int PRIMARY KEY IDENTITY(1, 1),
+  [descripcion] varchar(100) NOT NULL,
+  [id_provincia] int NOT NULL
+)
+GO
+
+CREATE TABLE [barrios] (
+  [id_barrio] int PRIMARY KEY IDENTITY(1, 1),
+  [descripcion] varchar(100) NOT NULL,
+  [id_ciudad] int
+)
+GO
+
+CREATE TABLE [direcciones] (
+  [id_direccion] int PRIMARY KEY IDENTITY(1, 1),
+  [altura] varchar(100) NOT NULL,
+  [id_barrio] int,
+  [id_calle] int
+)
+GO
+
+CREATE TABLE [tipos_documentos] (
+  [id_tipo_documento] int PRIMARY KEY IDENTITY(1, 1),
+  [descripcion] varchar(100) NOT NULL
+)
+GO
+
+CREATE TABLE [metodos_pagos] (
+  [id_metodo_pago] int PRIMARY KEY IDENTITY(1, 1),
+  [descripcion] varchar(100) NOT NULL
+)
+GO
+
+CREATE TABLE [metodos_compra] (
+  [id_metodo_compra] int PRIMARY KEY IDENTITY(1, 1),
+  [descripcion] varchar(100) NOT NULL
+)
+GO
+
+CREATE TABLE [formatos_proyecciones] (
+  [id_formato] int PRIMARY KEY IDENTITY(1, 1),
+  [nombre] varchar(100),
+  [descripcion] varchar(250)
+)
+GO
+
+CREATE TABLE [idiomas] (
+  [id_idioma] int PRIMARY KEY IDENTITY(1, 1),
+  [nombre] varchar(100),
+  [codigo] varchar(10)
+)
+GO
+
+CREATE TABLE [generos] (
+  [id_genero] int PRIMARY KEY IDENTITY(1, 1),
+  [descripcion] varchar(100)
+)
+GO
+
+CREATE TABLE [clasificaciones] (
+  [id_clasificacion] int PRIMARY KEY IDENTITY(1, 1),
+  [descripcion] varchar(100),
+  [codigo] varchar(20),
+  [edad_minima] int
+)
+GO
+
+CREATE TABLE [tipos_salas] (
+  [id_tipo_sala] int PRIMARY KEY IDENTITY(1, 1),
+  [descripcion] varchar(150)
+)
+GO
+
+CREATE TABLE [tipos_asientos] (
+  [id_tipo_asiento] int PRIMARY KEY IDENTITY(1, 1),
+  [descripcion] varchar(150)
+)
+GO
+
+CREATE TABLE [estados_asientos] (
+  [id_estado_asiento] int PRIMARY KEY IDENTITY(1, 1),
+  [descripcion] varchar(100)
+)
+GO
+
+CREATE TABLE [estados_funciones] (
+  [id_estado_funcion] int PRIMARY KEY IDENTITY(1, 1),
+  [descripcion] varchar(100)
+)
+GO
+
+CREATE TABLE [bloques_horarios] (
+  [id_bloque_horario] int PRIMARY KEY IDENTITY(1, 1),
+  [descripcion] varchar(150)
+)
+GO
+
+CREATE TABLE [cines] (
+  [id_cine] int PRIMARY KEY IDENTITY(1, 1),
+  [nombre] varchar(150) NOT NULL,
+  [id_direccion] int,
+  [fecha_apertura] date,
+  [telefono] varchar(50),
+  [email] varchar(150),
+  [estado] varchar(50)
+)
+GO
+
+CREATE TABLE [salas] (
+  [id_sala] int PRIMARY KEY IDENTITY(1, 1),
+  [id_cine] int NOT NULL,
+  [id_tipo_sala] int,
+  [nombre] varchar(150),
+  [capacidad] int,
+  [descripcion] varchar(250),
+  [estado] varchar(50)
+)
+GO
+
+CREATE TABLE [asientos] (
+  [id_asiento] int PRIMARY KEY IDENTITY(1, 1),
+  [id_sala] int NOT NULL,
+  [id_tipo_asiento] int,
+  [fila] varchar(10),
+  [numero] int,
+  [id_estado_asiento] int
+)
+GO
+
+CREATE TABLE [directores] (
+  [id_director] int PRIMARY KEY IDENTITY(1, 1),
+  [nombre] varchar(120),
+  [apellido] varchar(120),
+  [fecha_nacimiento] date,
+  [id_nacionalidad] varchar(10),
+  [biografia] text
+)
+GO
+
+CREATE TABLE [actores] (
+  [id_actor] int PRIMARY KEY IDENTITY(1, 1),
+  [nombre] varchar(120),
+  [apellido] varchar(120),
+  [fecha_nacimiento] date,
+  [id_nacionalidad] varchar(10),
+  [biografia] text
+)
+GO
+
+CREATE TABLE [peliculas] (
+  [id_pelicula] int PRIMARY KEY IDENTITY(1, 1),
+  [titulo] varchar(250) NOT NULL,
+  [descripcion] text,
+  [duracion_minutos] int,
+  [fecha_estreno] date,
+  [id_clasificacion] int,
+  [id_pais] varchar(10),
+  [estado] varchar(50)
+)
+GO
+
+CREATE TABLE [peliculas_generos] (
+  [id_pelicula] int,
+  [id_genero] int,
+  PRIMARY KEY ([id_pelicula], [id_genero])
+)
+GO
+
+CREATE TABLE [peliculas_directores] (
+  [id_pelicula] int,
+  [id_director] int,
+  PRIMARY KEY ([id_pelicula], [id_director])
+)
+GO
+
+CREATE TABLE [peliculas_actores] (
+  [id_pelicula] int,
+  [id_actor] int,
+  [personaje] varchar(150),
+  PRIMARY KEY ([id_pelicula], [id_actor])
+)
+GO
+
+CREATE TABLE [pelicula_proyeccion_formatos] (
+  [id_pelicula] int,
+  [id_formato] int,
+  PRIMARY KEY ([id_pelicula], [id_formato])
+)
+GO
+
+CREATE TABLE [temporadas] (
+  [id_temporada] int PRIMARY KEY IDENTITY(1, 1),
+  [descripcion] varchar(150),
+  [anio] int
+)
+GO
+
+CREATE TABLE [funciones] (
+  [id_funcion] int PRIMARY KEY IDENTITY(1, 1),
+  [id_pelicula] int,
+  [id_sala] int,
+  [id_formato] int,
+  [id_idioma_pelicula] int,
+  [fecha] date NOT NULL,
+  [hora_inicio] time NOT NULL,
+  [hora_fin] time,
+  [id_estado_funcion] int,
+  [id_temporada] int,
+  [id_bloque_horario] int
+)
+GO
+
+CREATE TABLE [estados_clientes] (
+  [id_estado_cliente] int PRIMARY KEY IDENTITY(1, 1),
+  [descripcion] varchar(100)
+)
+GO
+
+CREATE TABLE [clientes] (
+  [id_cliente] int PRIMARY KEY IDENTITY(1, 1),
+  [id_tipo_documento] int,
+  [nombre] varchar(120),
+  [apellido] varchar(120),
+  [nro_documento] varchar(50),
+  [fecha_nacimiento] date,
+  [email] varchar(150),
+  [telefono] varchar(50),
+  [id_direccion] int,
+  [id_estado_cliente] int,
+  [fecha_registro] datetime
+)
+GO
+
+CREATE TABLE [preferencias] (
+  [id_preferencia] int PRIMARY KEY IDENTITY(1, 1),
+  [descripcion] varchar(200) NOT NULL
+)
+GO
+
+CREATE TABLE [detalles_preferencias] (
+  [id_detalle_preferencia] int PRIMARY KEY IDENTITY(1, 1),
+  [id_cliente] int,
+  [id_preferencia] int
+)
+GO
+
+CREATE TABLE [tipos_membresia] (
+  [id_tipo_membresia] int PRIMARY KEY IDENTITY(1, 1),
+  [nombre] varchar(100),
+  [descripcion] varchar(250)
+)
+GO
+
+CREATE TABLE [membresias] (
+  [id_membresia] int PRIMARY KEY IDENTITY(1, 1),
+  [nombre] varchar(150),
+  [descripcion] varchar(500),
+  [id_tipo_membresia] int,
+  [precio] decimal(10,2),
+  [duracion_meses] int,
+  [fecha_creacion] datetime,
+  [estado] varchar(50)
+)
+GO
+
+CREATE TABLE [membresia_beneficios] (
+  [id_beneficio] int PRIMARY KEY IDENTITY(1, 1),
+  [id_membresia] int,
+  [nombre] varchar(200),
+  [descripcion] varchar(500),
+  [tipo] varchar(100)
+)
+GO
+
+CREATE TABLE [cliente_membresia] (
+  [id_cliente_membresia] int PRIMARY KEY IDENTITY(1, 1),
+  [id_cliente] int,
+  [id_membresia] int,
+  [estado] varchar(50),
+  [fecha_inicio] date,
+  [fecha_fin] date
+)
+GO
+
+CREATE TABLE [suscripciones_estados] (
+  [id_estado_suscripcion] int PRIMARY KEY IDENTITY(1, 1),
+  [descripcion] varchar(100)
+)
+GO
+
+CREATE TABLE [suscripciones] (
+  [id_suscripcion] int PRIMARY KEY IDENTITY(1, 1),
+  [id_cliente_membresia] int,
+  [monto] decimal(10,2),
+  [fecha_inicio] date,
+  [fecha_fin] date,
+  [id_estado_suscripcion] int
+)
+GO
+
+CREATE TABLE [suscripciones_pagos] (
+  [id_suscripcion_pago] int PRIMARY KEY IDENTITY(1, 1),
+  [id_suscripcion] int,
+  [fecha_pago] date,
+  [monto] decimal(10,2),
+  [id_metodo_pago] int,
+  [nro_operacion] varchar(100),
+  [estado_pago] varchar(50)
+)
+GO
+
+CREATE TABLE [pagos] (
+  [id_pago] int PRIMARY KEY IDENTITY(1, 1),
+  [monto] decimal(10,2) NOT NULL,
+  [fecha_pago] datetime,
+  [estado] varchar(50),
+  [id_metodo_pago] int,
+  [descripcion] varchar(250)
+)
+GO
+
+CREATE TABLE [detalles_pagos] (
+  [id_detalle_pago] int PRIMARY KEY IDENTITY(1, 1),
+  [id_pago] int,
+  [monto] decimal(10,2),
+  [descripcion] varchar(250)
+)
+GO
+
+CREATE TABLE [facturas] (
+  [id_factura] int PRIMARY KEY IDENTITY(1, 1),
+  [nro_factura] varchar(50) NOT NULL,
+  [id_cliente] int,
+  [fecha] datetime,
+  [monto_total] decimal(12,2),
+  [id_metodo_pago] int,
+  [id_metodo_compra] int,
+  [estado] varchar(50)
+)
+GO
+
+CREATE TABLE [tipos_productos] (
+  [id_tipo_producto] int PRIMARY KEY IDENTITY(1, 1),
+  [nombre] varchar(120),
+  [descripcion] varchar(250)
+)
+GO
+
+CREATE TABLE [marcas] (
+  [id_marca] int PRIMARY KEY IDENTITY(1, 1),
+  [nombre] varchar(150),
+  [descripcion] varchar(250)
+)
+GO
+
+CREATE TABLE [estados_productos] (
+  [id_estado_producto] int PRIMARY KEY IDENTITY(1, 1),
+  [descripcion] varchar(100)
+)
+GO
+
+CREATE TABLE [productos] (
+  [id_producto] int PRIMARY KEY IDENTITY(1, 1),
+  [nombre] varchar(200),
+  [descripcion] varchar(500),
+  [precio] decimal(10,2),
+  [stock] int,
+  [unidad_medida] varchar(50),
+  [id_tipo_producto] int,
+  [id_marca] int,
+  [id_estado_producto] int
+)
+GO
+
+CREATE TABLE [tickets] (
+  [id_ticket] int PRIMARY KEY IDENTITY(1, 1),
+  [id_funcion] int,
+  [id_asiento] int,
+  [fecha] datetime,
+  [precio] decimal(10,2),
+  [estado] varchar(50)
+)
+GO
+
+CREATE TABLE [detalles_facturas] (
+  [id_detalle_factura] int PRIMARY KEY IDENTITY(1, 1),
+  [id_factura] int,
+  [cantidad] int,
+  [descripcion] varchar(250),
+  [precio_unitario] decimal(10,2),
+  [subtotal] decimal(12,2),
+  [id_producto] int,
+  [id_ticket] int
+)
+GO
+
+CREATE TABLE [reservas] (
+  [id_reserva] int PRIMARY KEY IDENTITY(1, 1),
+  [id_cliente] int,
+  [id_funcion] int,
+  [fecha_reserva] datetime,
+  [fecha_vencimiento] datetime,
+  [estado] varchar(50)
+)
+GO
+
+CREATE TABLE [detalles_reservas] (
+  [id_detalle_reserva] int PRIMARY KEY IDENTITY(1, 1),
+  [id_reserva] int,
+  [id_asiento] int
+)
+GO
+
+CREATE TABLE [tipos_promociones] (
+  [id_tipo_promocion] int PRIMARY KEY IDENTITY(1, 1),
+  [nombre] varchar(150),
+  [descripcion] varchar(250)
+)
+GO
+
+CREATE TABLE [promociones] (
+  [id_promocion] int PRIMARY KEY IDENTITY(1, 1),
+  [nombre] varchar(200),
+  [descripcion] varchar(500),
+  [fecha_inicio] date,
+  [fecha_fin] date,
+  [id_tipo_promocion] int,
+  [estado] varchar(50),
+  [condiciones] varchar(500)
+)
+GO
+
+CREATE TABLE [detalles_promociones] (
+  [id_detalle_promocion] int PRIMARY KEY IDENTITY(1, 1),
+  [id_promocion] int,
+  [id_pelicula] int,
+  [id_tipo_sala] int,
+  [id_membresia] int,
+  [valor_descuento] decimal(10,2)
+)
+GO
+
+CREATE TABLE [tipos_empleados] (
+  [id_tipo_empleado] int PRIMARY KEY IDENTITY(1, 1),
+  [nivel] varchar(50),
+  [puesto] varchar(100),
+  [descripcion] varchar(250)
+)
+GO
+
+CREATE TABLE [empleados] (
+  [id_empleado] int PRIMARY KEY IDENTITY(1, 1),
+  [nombre] varchar(120),
+  [apellido] varchar(120),
+  [nro_documento] varchar(50),
+  [id_tipo_documento] int,
+  [email] varchar(150),
+  [telefono] varchar(50),
+  [id_tipo_empleado] int,
+  [salario] decimal(12,2),
+  [id_direccion] int,
+  [fecha_ingreso] date,
+  [estado] varchar(50)
+)
+GO
+
+CREATE TABLE [turnos_empleados] (
+  [id_turno] int PRIMARY KEY IDENTITY(1, 1),
+  [nombre] varchar(100),
+  [hora_inicio] time,
+  [hora_fin] time
+)
+GO
+
+CREATE TABLE [salas_empleados] (
+  [id_sala_empleado] int PRIMARY KEY IDENTITY(1, 1),
+  [id_sala] int,
+  [id_empleado] int,
+  [id_turno] int
+)
+GO
+
+ALTER TABLE [provincias] ADD FOREIGN KEY ([codigo_pais]) REFERENCES [paises] ([codigo_pais])
+GO
+
+ALTER TABLE [ciudades] ADD FOREIGN KEY ([id_provincia]) REFERENCES [provincias] ([id_provincia])
+GO
+
+ALTER TABLE [barrios] ADD FOREIGN KEY ([id_ciudad]) REFERENCES [ciudades] ([id_ciudad])
+GO
+
+ALTER TABLE [direcciones] ADD FOREIGN KEY ([id_barrio]) REFERENCES [barrios] ([id_barrio])
+GO
+
+ALTER TABLE [direcciones] ADD FOREIGN KEY ([id_calle]) REFERENCES [calles] ([id_calle])
+GO
+
+ALTER TABLE [cines] ADD FOREIGN KEY ([id_direccion]) REFERENCES [direcciones] ([id_direccion])
+GO
+
+ALTER TABLE [salas] ADD FOREIGN KEY ([id_cine]) REFERENCES [cines] ([id_cine])
+GO
+
+ALTER TABLE [salas] ADD FOREIGN KEY ([id_tipo_sala]) REFERENCES [tipos_salas] ([id_tipo_sala])
+GO
+
+ALTER TABLE [asientos] ADD FOREIGN KEY ([id_sala]) REFERENCES [salas] ([id_sala])
+GO
+
+ALTER TABLE [asientos] ADD FOREIGN KEY ([id_tipo_asiento]) REFERENCES [tipos_asientos] ([id_tipo_asiento])
+GO
+
+ALTER TABLE [asientos] ADD FOREIGN KEY ([id_estado_asiento]) REFERENCES [estados_asientos] ([id_estado_asiento])
+GO
+
+ALTER TABLE [directores] ADD FOREIGN KEY ([id_nacionalidad]) REFERENCES [paises] ([codigo_pais])
+GO
+
+ALTER TABLE [actores] ADD FOREIGN KEY ([id_nacionalidad]) REFERENCES [paises] ([codigo_pais])
+GO
+
+ALTER TABLE [peliculas] ADD FOREIGN KEY ([id_clasificacion]) REFERENCES [clasificaciones] ([id_clasificacion])
+GO
+
+ALTER TABLE [peliculas] ADD FOREIGN KEY ([id_pais]) REFERENCES [paises] ([codigo_pais])
+GO
+
+ALTER TABLE [peliculas_generos] ADD FOREIGN KEY ([id_pelicula]) REFERENCES [peliculas] ([id_pelicula])
+GO
+
+ALTER TABLE [peliculas_generos] ADD FOREIGN KEY ([id_genero]) REFERENCES [generos] ([id_genero])
+GO
+
+ALTER TABLE [peliculas_directores] ADD FOREIGN KEY ([id_pelicula]) REFERENCES [peliculas] ([id_pelicula])
+GO
+
+ALTER TABLE [peliculas_directores] ADD FOREIGN KEY ([id_director]) REFERENCES [directores] ([id_director])
+GO
+
+ALTER TABLE [peliculas_actores] ADD FOREIGN KEY ([id_pelicula]) REFERENCES [peliculas] ([id_pelicula])
+GO
+
+ALTER TABLE [peliculas_actores] ADD FOREIGN KEY ([id_actor]) REFERENCES [actores] ([id_actor])
+GO
+
+ALTER TABLE [pelicula_proyeccion_formatos] ADD FOREIGN KEY ([id_pelicula]) REFERENCES [peliculas] ([id_pelicula])
+GO
+
+ALTER TABLE [pelicula_proyeccion_formatos] ADD FOREIGN KEY ([id_formato]) REFERENCES [formatos_proyecciones] ([id_formato])
+GO
+
+ALTER TABLE [funciones] ADD FOREIGN KEY ([id_pelicula]) REFERENCES [peliculas] ([id_pelicula])
+GO
+
+ALTER TABLE [funciones] ADD FOREIGN KEY ([id_sala]) REFERENCES [salas] ([id_sala])
+GO
+
+ALTER TABLE [funciones] ADD FOREIGN KEY ([id_formato]) REFERENCES [formatos_proyecciones] ([id_formato])
+GO
+
+ALTER TABLE [funciones] ADD FOREIGN KEY ([id_idioma_pelicula]) REFERENCES [idiomas] ([id_idioma])
+GO
+
+ALTER TABLE [funciones] ADD FOREIGN KEY ([id_estado_funcion]) REFERENCES [estados_funciones] ([id_estado_funcion])
+GO
+
+ALTER TABLE [funciones] ADD FOREIGN KEY ([id_temporada]) REFERENCES [temporadas] ([id_temporada])
+GO
+
+ALTER TABLE [funciones] ADD FOREIGN KEY ([id_bloque_horario]) REFERENCES [bloques_horarios] ([id_bloque_horario])
+GO
+
+ALTER TABLE [clientes] ADD FOREIGN KEY ([id_tipo_documento]) REFERENCES [tipos_documentos] ([id_tipo_documento])
+GO
+
+ALTER TABLE [clientes] ADD FOREIGN KEY ([id_direccion]) REFERENCES [direcciones] ([id_direccion])
+GO
+
+ALTER TABLE [clientes] ADD FOREIGN KEY ([id_estado_cliente]) REFERENCES [estados_clientes] ([id_estado_cliente])
+GO
+
+ALTER TABLE [detalles_preferencias] ADD FOREIGN KEY ([id_cliente]) REFERENCES [clientes] ([id_cliente])
+GO
+
+ALTER TABLE [detalles_preferencias] ADD FOREIGN KEY ([id_preferencia]) REFERENCES [preferencias] ([id_preferencia])
+GO
+
+ALTER TABLE [membresias] ADD FOREIGN KEY ([id_tipo_membresia]) REFERENCES [tipos_membresia] ([id_tipo_membresia])
+GO
+
+ALTER TABLE [membresia_beneficios] ADD FOREIGN KEY ([id_membresia]) REFERENCES [membresias] ([id_membresia])
+GO
+
+ALTER TABLE [cliente_membresia] ADD FOREIGN KEY ([id_cliente]) REFERENCES [clientes] ([id_cliente])
+GO
+
+ALTER TABLE [cliente_membresia] ADD FOREIGN KEY ([id_membresia]) REFERENCES [membresias] ([id_membresia])
+GO
+
+ALTER TABLE [suscripciones] ADD FOREIGN KEY ([id_cliente_membresia]) REFERENCES [cliente_membresia] ([id_cliente_membresia])
+GO
+
+ALTER TABLE [suscripciones] ADD FOREIGN KEY ([id_estado_suscripcion]) REFERENCES [suscripciones_estados] ([id_estado_suscripcion])
+GO
+
+ALTER TABLE [suscripciones_pagos] ADD FOREIGN KEY ([id_suscripcion]) REFERENCES [suscripciones] ([id_suscripcion])
+GO
+
+ALTER TABLE [suscripciones_pagos] ADD FOREIGN KEY ([id_metodo_pago]) REFERENCES [metodos_pagos] ([id_metodo_pago])
+GO
+
+ALTER TABLE [pagos] ADD FOREIGN KEY ([id_metodo_pago]) REFERENCES [metodos_pagos] ([id_metodo_pago])
+GO
+
+ALTER TABLE [detalles_pagos] ADD FOREIGN KEY ([id_pago]) REFERENCES [pagos] ([id_pago])
+GO
+
+ALTER TABLE [facturas] ADD FOREIGN KEY ([id_cliente]) REFERENCES [clientes] ([id_cliente])
+GO
+
+ALTER TABLE [facturas] ADD FOREIGN KEY ([id_metodo_pago]) REFERENCES [metodos_pagos] ([id_metodo_pago])
+GO
+
+ALTER TABLE [facturas] ADD FOREIGN KEY ([id_metodo_compra]) REFERENCES [metodos_compra] ([id_metodo_compra])
+GO
+
+ALTER TABLE [productos] ADD FOREIGN KEY ([id_tipo_producto]) REFERENCES [tipos_productos] ([id_tipo_producto])
+GO
+
+ALTER TABLE [productos] ADD FOREIGN KEY ([id_marca]) REFERENCES [marcas] ([id_marca])
+GO
+
+ALTER TABLE [productos] ADD FOREIGN KEY ([id_estado_producto]) REFERENCES [estados_productos] ([id_estado_producto])
+GO
+
+ALTER TABLE [tickets] ADD FOREIGN KEY ([id_funcion]) REFERENCES [funciones] ([id_funcion])
+GO
+
+ALTER TABLE [tickets] ADD FOREIGN KEY ([id_asiento]) REFERENCES [asientos] ([id_asiento])
+GO
+
+ALTER TABLE [detalles_facturas] ADD FOREIGN KEY ([id_factura]) REFERENCES [facturas] ([id_factura])
+GO
+
+ALTER TABLE [detalles_facturas] ADD FOREIGN KEY ([id_producto]) REFERENCES [productos] ([id_producto])
+GO
+
+ALTER TABLE [detalles_facturas] ADD FOREIGN KEY ([id_ticket]) REFERENCES [tickets] ([id_ticket])
+GO
+
+ALTER TABLE [reservas] ADD FOREIGN KEY ([id_cliente]) REFERENCES [clientes] ([id_cliente])
+GO
+
+ALTER TABLE [reservas] ADD FOREIGN KEY ([id_funcion]) REFERENCES [funciones] ([id_funcion])
+GO
+
+ALTER TABLE [detalles_reservas] ADD FOREIGN KEY ([id_reserva]) REFERENCES [reservas] ([id_reserva])
+GO
+
+ALTER TABLE [detalles_reservas] ADD FOREIGN KEY ([id_asiento]) REFERENCES [asientos] ([id_asiento])
+GO
+
+ALTER TABLE [promociones] ADD FOREIGN KEY ([id_tipo_promocion]) REFERENCES [tipos_promociones] ([id_tipo_promocion])
+GO
+
+ALTER TABLE [detalles_promociones] ADD FOREIGN KEY ([id_promocion]) REFERENCES [promociones] ([id_promocion])
+GO
+
+ALTER TABLE [detalles_promociones] ADD FOREIGN KEY ([id_pelicula]) REFERENCES [peliculas] ([id_pelicula])
+GO
+
+ALTER TABLE [detalles_promociones] ADD FOREIGN KEY ([id_tipo_sala]) REFERENCES [tipos_salas] ([id_tipo_sala])
+GO
+
+ALTER TABLE [detalles_promociones] ADD FOREIGN KEY ([id_membresia]) REFERENCES [membresias] ([id_membresia])
+GO
+
+ALTER TABLE [empleados] ADD FOREIGN KEY ([id_tipo_documento]) REFERENCES [tipos_documentos] ([id_tipo_documento])
+GO
+
+ALTER TABLE [empleados] ADD FOREIGN KEY ([id_tipo_empleado]) REFERENCES [tipos_empleados] ([id_tipo_empleado])
+GO
+
+ALTER TABLE [empleados] ADD FOREIGN KEY ([id_direccion]) REFERENCES [direcciones] ([id_direccion])
+GO
+
+ALTER TABLE [salas_empleados] ADD FOREIGN KEY ([id_sala]) REFERENCES [salas] ([id_sala])
+GO
+
+ALTER TABLE [salas_empleados] ADD FOREIGN KEY ([id_empleado]) REFERENCES [empleados] ([id_empleado])
+GO
+
+ALTER TABLE [salas_empleados] ADD FOREIGN KEY ([id_turno]) REFERENCES [turnos_empleados] ([id_turno])
+GO
+
+
+INSERT INTO paises (codigo_pais, descripcion) VALUES
+('AR', 'Argentina'),
+('BR', 'Brasil'),
+('CL', 'Chile'),
+('UY', 'Uruguay'),
+('PY', 'Paraguay'),
+('BO', 'Bolivia'),
+('PE', 'Perú'),
+('CO', 'Colombia'),
+('VE', 'Venezuela'),
+('EC', 'Ecuador'),
+('MX', 'México'),
+('US', 'Estados Unidos'),
+('CA', 'Canadá'),
+('ES', 'España'),
+('IT', 'Italia'),
+('FR', 'Francia'),
+('DE', 'Alemania'),
+('JP', 'Japón'),
+('KR', 'Corea del Sur'),
+('CN', 'China'),
+('IE', 'Irlanda'),
+('AU', 'Australia'),
+('NZ', 'Nueva Zelanda'),
+('UK', 'Reino Unido');
+
+
+
+INSERT INTO provincias (descripcion, codigo_pais) VALUES
+('Buenos Aires', 'AR'),
+('Córdoba', 'AR'),
+('Santa Fe', 'AR'),
+('Mendoza', 'AR'),
+('Tucumán', 'AR'),
+('Salta', 'AR'),
+('Entre Ríos', 'AR'),
+('San Luis', 'AR'),
+('San Juan', 'AR'),
+('Neuquén', 'AR'),
+('Río Negro', 'AR'),
+('Chubut', 'AR'),
+('Misiones', 'AR'),
+('Corrientes', 'AR'),
+('Formosa', 'AR'),
+('Jujuy', 'AR'),
+('La Rioja', 'AR'),
+('Catamarca', 'AR'),
+('Santiago del Estero', 'AR'),
+('La Pampa', 'AR');
+
+INSERT INTO ciudades (descripcion, id_provincia) VALUES
+('La Plata', 1),
+('Córdoba Capital', 2),
+('Rosario', 3),
+('Mendoza Capital', 4),
+('San Miguel de Tucumán', 5),
+('Salta Capital', 6),
+('Paraná', 7),
+('San Luis Capital', 8),
+('San Juan Capital', 9),
+('Neuquén Capital', 10),
+('Viedma', 11),
+('Rawson', 12),
+('Posadas', 13),
+('Corrientes Capital', 14),
+('Formosa Capital', 15),
+('San Salvador de Jujuy', 16),
+('La Rioja Capital', 17),
+('San Fernando del Valle de Catamarca', 18),
+('Santiago del Estero Capital', 19),
+('Santa Rosa', 20);
+
+INSERT INTO barrios (descripcion, id_ciudad) VALUES
+('Centro', 1),
+('Nueva Córdoba', 2),
+('Pichincha', 3),
+('Godoy Cruz', 4),
+('Yerba Buena', 5),
+('Tres Cerritos', 6),
+('Puerto Viejo', 7),
+('Rawson Viejo', 8),
+('Concepción', 9),
+('Alta Barda', 10),
+('Barrio Jardín', 11),
+('Playa Unión', 12),
+('Villa Sarita', 13),
+('San Roque', 14),
+('Eva Perón', 15),
+('Los Perales', 16),
+('Cochangasta', 17),
+('Villa Cubas', 18),
+('Belgrano', 19),
+('Villa Alonso', 20);
+
+INSERT INTO calles (id_calle, nombre) VALUES
+(1, 'Avenida San Martín'),
+(2, 'Belgrano'),
+(3, 'Rivadavia'),
+(4, 'Mitre'),
+(5, 'Sarmiento'),
+(6, '9 de Julio'),
+(7, 'Avenida del Libertador'),
+(8, 'Moreno'),
+(9, 'Italia'),
+(10, 'España'),
+(11, 'Colón'),
+(12, 'Las Heras'),
+(13, 'Entre Ríos'),
+(14, 'Catamarca'),
+(15, 'Salta'),
+(16, 'Tucumán'),
+(17, 'Corrientes'),
+(18, 'Urquiza'),
+(19, 'San Juan'),
+(20, 'La Rioja');
+
+INSERT INTO direcciones (altura, id_barrio, id_calle) VALUES
+('123', 1, 1),
+('250', 2, 2),
+('1450', 3, 3),
+('800', 4, 4),
+('350', 5, 5),
+('1290', 6, 6),
+('675', 7, 7),
+('980', 8, 8),
+('101', 9, 9),
+('777', 10, 10),
+('300', 11, 11),
+('480', 12, 12),
+('510', 13, 13),
+('920', 14, 14),
+('640', 15, 15),
+('870', 16, 16),
+('190', 17, 17),
+('420', 18, 18),
+('225', 19, 19),
+('999', 20, 20);
+
+
+INSERT INTO tipos_documentos (descripcion) VALUES
+('DNI'),
+('Pasaporte'),
+('Carnet de Conducir'),
+('Cédula de Identidad'),
+('Libreta Universitaria'),
+('Documento Extranjero'),
+('CUIL'),
+('CUIT'),
+('Tarjeta de Residencia'),
+('NIE'),
+('ID Nacional'),
+('Tarjeta de Estudiante'),
+('Carnet Militar'),
+('Pasaporte Diplomático'),
+('Documento Temporal'),
+('Visa de Trabajo'),
+('Visa de Estudio'),
+('Permiso de Residencia'),
+('Documento Digital'),
+('Otro');
+
+INSERT INTO metodos_pagos (descripcion) VALUES
+('Efectivo'),
+('Tarjeta de Crédito'),
+('Tarjeta de Débito'),
+('Mercado Pago'),
+('Transferencia Bancaria'),
+('PayPal'),
+('Criptomonedas'),
+('Tarjeta Regalo'),
+('Pago en Boletería'),
+('Descuento Promocional');
+
+INSERT INTO metodos_compra (descripcion) VALUES
+('Online'),
+('Presencial en Boletería'),
+('App Móvil'),
+('Kiosco Automático'),
+('Reserva Telefónica');
+
+INSERT INTO formatos_proyecciones (nombre, descripcion) VALUES
+('2D', 'Proyección estándar en dos dimensiones.'),
+('3D', 'Proyección con gafas tridimensionales.'),
+('IMAX', 'Formato de alta definición y pantalla gigante.'),
+('4DX', 'Asientos con movimiento y efectos sensoriales.'),
+('D-BOX', 'Asientos con vibración sincronizada con la película.'),
+('VIP', 'Proyección con servicio premium y sonido envolvente.'),
+('SUBTITULADA', 'Película en idioma original con subtítulos.'),
+('DOBLADA', 'Película traducida al idioma local.'),
+('Laser Ultra', 'Proyección con tecnología láser y resolución 4K.'),
+('Cine Arte', 'Proyección especial para películas independientes.');
+
+INSERT INTO idiomas (nombre, codigo) VALUES
+('Español', 'ES'),
+('Inglés', 'EN'),
+('Francés', 'FR'),
+('Alemán', 'DE'),
+('Italiano', 'IT'),
+('Portugués', 'PT'),
+('Japonés', 'JP'),
+('Coreano', 'KR'),
+('Chino Mandarín', 'ZH'),
+('Ruso', 'RU'),
+('Sueco', 'SV'),
+('Noruego', 'NO'),
+('Finés', 'FI'),
+('Árabe', 'AR'),
+('Hindi', 'HI'),
+('Griego', 'EL'),
+('Turco', 'TR'),
+('Polaco', 'PL'),
+('Holandés', 'NL'),
+('Hebreo', 'HE');
+
+
+
+
+INSERT INTO generos (descripcion) VALUES
+('Acción'),
+('Aventura'),
+('Comedia'),
+('Drama'),
+('Terror'),
+('Ciencia Ficción'),
+('Romance'),
+('Animación'),
+('Fantasía'),
+('Documental'),
+('Musical'),
+('Crimen'),
+('Misterio'),
+('Histórico'),
+('Deportes'),
+('Bélico'),
+('Superhéroes'),
+('Thriller'),
+('Western'),
+('Infantil');
+
+INSERT INTO clasificaciones (descripcion, codigo, edad_minima) VALUES
+('Apta para todo público', 'ATP', 0),
+('Mayores de 7 años', '7+', 7),
+('Mayores de 13 años', '13+', 13),
+('Mayores de 16 años', '16+', 16),
+('Mayores de 18 años', '18+', 18),
+('Solo adultos', 'ADULT', 21),
+('Contenido violento', 'V+', 16),
+('Contenido Exclusivo', 'E+', 14),
+('Documental educativo', 'DOC', 0),
+('Experimental', 'EXP', 13);
+
+INSERT INTO tipos_salas (descripcion) VALUES
+('Sala estándar 2D'),
+('Sala 3D con sonido envolvente'),
+('Sala IMAX'),
+('Sala 4DX'),
+('Sala VIP'),
+('Sala Premium con butacas reclinables'),
+('Sala Infantil'),
+('Sala Cine Arte'),
+('Sala al aire libre'),
+('Sala experimental');
+
+
+INSERT INTO tipos_asientos (descripcion) VALUES
+('Asiento estándar'),
+('Asiento reclinable'),
+('Asiento VIP'),
+('Asiento doble'),
+('Asiento con vibración'),
+('Asiento accesible para discapacitados'),
+('Asiento premium'),
+('Asiento económico'),
+('Asiento con bandeja'),
+('Asiento cama');
+
+INSERT INTO estados_asientos (descripcion) VALUES
+('Disponible'),
+('Ocupado'),
+('Reservado'),
+('Fuera de servicio'),
+('Bloqueado por mantenimiento');
+
+INSERT INTO estados_funciones (descripcion) VALUES
+('Programada'),
+('En curso'),
+('Finalizada'),
+('Cancelada'),
+('Suspendida');
+
+INSERT INTO bloques_horarios (descripcion) VALUES
+('Mañana (10:00 - 13:00)'),
+('Mediodía (13:00 - 16:00)'),
+('Tarde (16:00 - 19:00)'),
+('Noche (19:00 - 22:00)'),
+('Trasnoche (22:00 - 01:00)'),
+('Madrugada (01:00 - 04:00)'),
+('Especial Festivo (12:00 - 15:00)'),
+('Especial Estreno (21:00 - 00:00)'),
+('Preventa (09:00 - 10:00)'),
+('Maratón (00:00 - 06:00)');
+
+INSERT INTO cines (nombre, id_direccion, fecha_apertura, telefono, email, estado) VALUES
+('Cine Atlas La Plata', 1, '2010-05-12', '221-4501234', 'atlaslaplata@cine.com', 'Activo'),
+('Cinemark Córdoba', 2, '2015-09-01', '351-4209876', 'cordoba@cinemark.com', 'Activo'),
+('Hoyts Rosario', 3, '2013-03-22', '341-4705566', 'rosario@hoyts.com', 'Activo'),
+('Cine Village Mendoza', 4, '2011-11-11', '261-4803344', 'mendoza@village.com', 'Activo'),
+('Cine Tucumán Plaza', 5, '2018-07-30', '381-4556677', 'tucuman@cineplaza.com', 'Activo'),
+('Cine Salta Shopping', 6, '2016-10-05', '387-4892233', 'salta@cineshopping.com', 'Activo'),
+('Cine Paraná Center', 7, '2014-02-14', '343-4236789', 'parana@cinecenter.com', 'Activo'),
+('Cine San Juan Premium', 9, '2019-12-15', '264-4890011', 'sanjuan@cinepremium.com', 'Activo'),
+('Cine Neuquén IMAX', 10, '2020-06-20', '299-4229988', 'neuquen@imax.com', 'Activo'),
+('Cine Chubut Arte', 12, '2017-04-02', '280-4312345', 'chubut@cinearte.com', 'Activo');
+
+INSERT INTO salas (id_cine, id_tipo_sala, nombre, capacidad, descripcion, estado) VALUES
+(1, 1, 'Sala 1A', 120, 'Sala estándar con sonido Dolby', 'Activa'),
+(1, 2, 'Sala 3D', 80, 'Sala con proyección 3D', 'Activa'),
+(2, 1, 'Sala Central', 150, 'Sala principal con sonido 7.1', 'Activa'),
+(2, 4, 'Sala 4DX', 70, 'Asientos con vibración y efectos', 'Activa'),
+(3, 3, 'IMAX Rosario', 200, 'Pantalla gigante IMAX', 'Activa'),
+(3, 5, 'Sala VIP', 60, 'Butacas reclinables y servicio en sala', 'Activa'),
+(4, 1, 'Sala Premium 1', 100, 'Sonido envolvente', 'Activa'),
+(4, 3, 'IMAX Mendoza', 180, 'Pantalla gigante HD', 'Activa'),
+(5, 1, 'Sala Tucumán 1', 110, 'Proyección digital', 'Activa'),
+(5, 2, 'Sala Tucumán 3D', 90, 'Proyección 3D moderna', 'Activa'),
+(6, 1, 'Sala Salta 1', 130, 'Proyección 2D estándar', 'Activa'),
+(6, 4, 'Sala Salta 4DX', 75, 'Efectos sensoriales', 'Activa'),
+(7, 1, 'Sala Paraná 1', 100, 'Pantalla estándar', 'Activa'),
+(7, 5, 'Sala VIP Paraná', 60, 'Asientos premium', 'Activa'),
+(8, 1, 'Sala San Juan 1', 140, 'Pantalla digital', 'Activa'),
+(8, 2, 'Sala San Juan 3D', 90, 'Proyección tridimensional', 'Activa'),
+(9, 3, 'IMAX Neuquén', 220, 'Proyección 4K láser', 'Activa'),
+(9, 5, 'Sala VIP Neuquén', 80, 'Servicio exclusivo', 'Activa'),
+(10, 8, 'Sala Arte 1', 100, 'Proyecciones independientes', 'Activa'),
+(10, 1, 'Sala Arte 2', 90, 'Películas locales', 'Activa');
+
+INSERT INTO asientos (id_sala, id_tipo_asiento, fila, numero, id_estado_asiento) VALUES
+(1, 1, 'A', 1, 1),
+(1, 1, 'A', 2, 1),
+(1, 1, 'A', 3, 2),
+(1, 2, 'B', 1, 1),
+(2, 1, 'A', 1, 1),
+(2, 2, 'A', 2, 1),
+(3, 3, 'A', 1, 3),
+(3, 3, 'A', 2, 1),
+(4, 4, 'B', 1, 1),
+(4, 4, 'B', 2, 2),
+(5, 1, 'C', 1, 1),
+(5, 1, 'C', 2, 1),
+(6, 5, 'D', 1, 4),
+(6, 5, 'D', 2, 1),
+(7, 2, 'A', 1, 1),
+(7, 2, 'A', 2, 1),
+(8, 3, 'A', 1, 1),
+(8, 3, 'A', 2, 3),
+(9, 1, 'E', 1, 1),
+(9, 1, 'E', 2, 1);
+
+INSERT INTO directores (nombre, apellido, fecha_nacimiento, id_nacionalidad, biografia) VALUES
+('Christopher', 'Nolan', '1970-07-30', 'UK', 'Director británico-estadounidense conocido por películas como Inception y Oppenheimer.'),
+('Greta', 'Gerwig', '1983-08-04', 'US', 'Directora y guionista estadounidense reconocida por Lady Bird y Barbie.'),
+('Denis', 'Villeneuve', '1967-10-03', 'CA', 'Director canadiense conocido por Arrival, Blade Runner 2049 y Dune.'),
+('Martin', 'Scorsese', '1942-11-17', 'US', 'Leyenda del cine, responsable de clásicos como Taxi Driver y The Irishman.'),
+('Taika', 'Waititi', '1975-08-16', 'NZ', 'Director neozelandés ganador del Oscar por Jojo Rabbit.'),
+('Quentin', 'Tarantino', '1963-03-27', 'US', 'Director estadounidense conocido por su estilo irreverente en Pulp Fiction y Kill Bill.'),
+('Patty', 'Jenkins', '1971-07-24', 'US', 'Directora de Monster y Wonder Woman.'),
+('James', 'Cameron', '1954-08-16', 'CA', 'Director canadiense de Titanic, Avatar y Terminator 2.'),
+('Bong', 'Joon-ho', '1969-09-14', 'KR', 'Director surcoreano ganador del Oscar por Parasite.'),
+('Steven', 'Spielberg', '1946-12-18', 'US', 'Uno de los directores más influyentes de todos los tiempos, creador de E.T. y Jurassic Park.');
+
+INSERT INTO actores (nombre, apellido, fecha_nacimiento, id_nacionalidad, biografia) VALUES
+('Cillian', 'Murphy', '1976-05-25', 'IE', 'Actor irlandés famoso por Peaky Blinders y Oppenheimer.'),
+('Margot', 'Robbie', '1990-07-02', 'AU', 'Actriz australiana, protagonista de Barbie y Babylon.'),
+('Ryan', 'Gosling', '1980-11-12', 'CA', 'Actor canadiense conocido por La La Land y Drive.'),
+('Leonardo', 'DiCaprio', '1974-11-11', 'US', 'Actor estadounidense ganador del Oscar por The Revenant.'),
+('Robert', 'Downey Jr.', '1965-04-04', 'US', 'Actor reconocido por Iron Man y Oppenheimer.'),
+('Florence', 'Pugh', '1996-01-03', 'UK', 'Actriz británica destacada en Midsommar y Little Women.'),
+('Zendaya', 'Coleman', '1996-09-01', 'US', 'Actriz y cantante conocida por Euphoria y Dune.'),
+('Timothée', 'Chalamet', '1995-12-27', 'US', 'Actor franco-estadounidense protagonista de Dune y Wonka.'),
+('Tom', 'Cruise', '1962-07-03', 'US', 'Estrella de acción icónica por Misión Imposible y Top Gun.'),
+('Scarlett', 'Johansson', '1984-11-22', 'US', 'Actriz estadounidense, conocida por Black Widow y Marriage Story.');
+
+
+
+INSERT INTO peliculas (titulo, descripcion, duracion_minutos, fecha_estreno, id_clasificacion, id_pais, estado) VALUES
+('Oppenheimer', 'La historia del físico J. Robert Oppenheimer y la creación de la bomba atómica.', 180, '2023-07-21', 4, 'US', 'En cartelera'),
+('Barbie', 'Barbie vive una crisis existencial y viaja al mundo real.', 114, '2023-07-20', 2, 'US', 'Finalizada'),
+('Dune: Parte Dos', 'Paul Atreides busca venganza y el destino del universo se decide en Arrakis.', 166, '2024-03-01', 3, 'US', 'En cartelera'),
+('Killers of the Flower Moon', 'Basada en hechos reales sobre asesinatos en la nación Osage.', 206, '2023-10-20', 4, 'US', 'Finalizada'),
+('Jojo Rabbit', 'Un niño alemán con un amigo imaginario que resulta ser Hitler.', 108, '2019-10-18', 2, 'NZ', 'Finalizada'),
+('Avatar: The Way of Water', 'Jake Sully y Neytiri deben proteger a su familia en Pandora.', 192, '2022-12-16', 2, 'US', 'Finalizada'),
+('Parasite', 'Una familia pobre se infiltra en la vida de una familia rica con consecuencias imprevisibles.', 132, '2019-05-30', 4, 'KR', 'Finalizada'),
+('Tenet', 'Un agente secreto debe manipular el flujo del tiempo para evitar una catástrofe global.', 150, '2020-08-26', 4, 'UK', 'Finalizada'),
+('Dune', 'El joven Paul Atreides llega al peligroso planeta Arrakis, fuente de la especia más valiosa del universo.', 155, '2021-10-22', 3, 'US', 'Finalizada'),
+('Wonder Woman 1984', 'Diana Prince enfrenta una nueva amenaza en los años 80.', 151, '2020-12-25', 2, 'US', 'Finalizada');
+
+
+
+INSERT INTO peliculas_directores (id_pelicula, id_director) VALUES
+(1, 1),  -- Nolan
+(2, 2),  -- Gerwig
+(3, 3),  -- Villeneuve
+(4, 4),  -- Scorsese
+(5, 5),  -- Waititi
+(6, 8),  -- Cameron
+(7, 9),  -- Bong Joon-ho
+(8, 1),  -- Nolan
+(9, 3),  -- Villeneuve
+(10, 7); -- Jenkins
+
+INSERT INTO peliculas_actores (id_pelicula, id_actor, personaje) VALUES
+(1, 1, 'J. Robert Oppenheimer'),    -- Cillian Murphy
+(1, 5, 'Lewis Strauss'),             -- Robert Downey Jr.
+(1, 6, 'Jean Tatlock'),              -- Florence Pugh
+(2, 2, 'Barbie'),                    -- Margot Robbie
+(2, 3, 'Ken'),                       -- Ryan Gosling
+(3, 7, 'Chani'),                     -- Zendaya
+(3, 8, 'Paul Atreides'),             -- Timothée Chalamet
+(3, 5, 'Gurney Halleck'),            -- Robert Downey Jr.
+(4, 4, 'Ernest Burkhart'),           -- Leonardo DiCaprio
+(4, 10, 'Mollie Burkhart'),          -- Scarlett Johansson
+(5, 5, 'Capitán Klenzendorf'),       -- Robert Downey Jr.
+(6, 9, 'Jake Sully'),                -- Tom Cruise
+(7, 10, 'Kim Ki-jung'),              -- Scarlett Johansson
+(8, 1, 'El Protagonista'),           -- Cillian Murphy
+(8, 6, 'Kat'),                       -- Florence Pugh
+(9, 8, 'Paul Atreides'),             -- Timothée Chalamet
+(9, 7, 'Chani'),                     -- Zendaya
+(10, 10, 'Diana Prince'),            -- Scarlett Johansson
+(10, 3, 'Steve Trevor');             -- Ryan Gosling
+
+
+INSERT INTO peliculas_generos (id_pelicula, id_genero) VALUES
+(1, 4), -- Drama
+(1, 14), -- Histórico
+(2, 3), -- Comedia
+(2, 7), -- Romance
+(3, 6), -- Ciencia Ficción
+(3, 9), -- Fantasía
+(4, 14), -- Histórico
+(4, 12), -- Crimen
+(5, 3), -- Comedia
+(5, 14), -- Histórico
+(6, 6), -- Ciencia Ficción
+(6, 1), -- Acción
+(7, 4), -- Drama
+(7, 12), -- Crimen
+(8, 6), -- Ciencia Ficción
+(8, 1), -- Acción
+(9, 6), -- Ciencia Ficción
+(9, 2), -- Aventura
+(10, 1), -- Acción
+(10, 7); -- Romance
+
+INSERT INTO pelicula_proyeccion_formatos (id_pelicula, id_formato) VALUES
+(1, 3),  -- IMAX
+(1, 1),  -- 2D
+(2, 1),  -- 2D
+(2, 2),  -- 3D
+(3, 3),  -- IMAX
+(3, 4),  -- 4DX
+(4, 1),
+(4, 3),
+(5, 1),
+(6, 3),
+(6, 4),
+(7, 1),
+(7, 2),
+(8, 3),
+(9, 3),
+(9, 4),
+(10, 2),
+(10, 1),
+(2, 5),
+(3, 9);
+
+INSERT INTO temporadas (descripcion, anio) VALUES
+('Verano', 2025),
+('Otoño', 2025),
+('Invierno', 2025),
+('Primavera', 2025),
+('Verano', 2024),
+('Otoño', 2024),
+('Invierno', 2024),
+('Primavera', 2024),
+('Verano', 2023),
+('Otoño', 2023),
+('Invierno', 2023),
+('Primavera', 2023),
+('Verano', 2022),
+('Otoño', 2022),
+('Invierno', 2022),
+('Primavera', 2022),
+('Verano', 2021),
+('Otoño', 2021),
+('Invierno', 2021),
+('Primavera', 2021);
+
+
+INSERT INTO funciones (id_pelicula, id_sala, id_formato, id_idioma_pelicula, fecha, hora_inicio, hora_fin, id_estado_funcion, id_temporada, id_bloque_horario)
+VALUES
+(1, 1, 1, 1, '2025-01-12', '15:00', '17:30', 1, 1, 1),
+(2, 2, 2, 2, '2025-02-10', '18:00', '20:45', 1, 1, 2),
+(3, 3, 3, 1, '2025-03-05', '21:00', '23:15', 1, 1, 3),
+(4, 4, 1, 3, '2025-04-07', '19:30', '21:45', 1, 2, 4),
+(5, 5, 2, 1, '2025-05-01', '16:00', '18:30', 1, 2, 1),
+(6, 6, 3, 2, '2025-06-20', '20:00', '22:45', 1, 3, 2),
+(7, 7, 1, 1, '2025-07-10', '22:00', '00:30', 1, 3, 3),
+(8, 8, 2, 3, '2025-08-05', '17:00', '19:10', 1, 4, 4),
+(9, 9, 3, 1, '2025-09-02', '20:30', '23:00', 1, 4, 1),
+(10, 10, 1, 2, '2025-10-15', '14:00', '16:45', 1, 1, 2),
+(1, 11, 2, 1, '2025-10-16', '18:00', '20:15', 1, 1, 3),
+(2, 12, 3, 1, '2025-10-17', '21:30', '23:50', 1, 1, 4),
+(3, 13, 1, 1, '2025-11-01', '15:00', '17:30', 1, 2, 1),
+(4, 14, 2, 2, '2025-11-02', '18:30', '20:45', 1, 2, 2),
+(5, 15, 3, 3, '2025-11-03', '21:00', '23:15', 1, 2, 3),
+(6, 16, 1, 1, '2025-11-04', '22:00', '00:30', 1, 3, 4),
+(7, 17, 2, 1, '2025-11-05', '17:00', '19:30', 1, 3, 1),
+(8, 18, 3, 2, '2025-11-06', '19:45', '22:15', 1, 4, 2),
+(9, 19, 1, 1, '2025-11-07', '16:30', '18:45', 1, 4, 3),
+(10, 20, 2, 1, '2025-11-08', '20:00', '22:30', 1, 4, 4);
+
+
+INSERT INTO estados_clientes (descripcion) VALUES
+('Activo'),
+('Inactivo'),
+('Suspendido'),
+('Pendiente de verificación'),
+('Bloqueado');
+
+INSERT INTO clientes (id_tipo_documento, nombre, apellido, nro_documento, fecha_nacimiento, email, telefono, id_direccion, id_estado_cliente, fecha_registro)
+VALUES
+(1, 'Juan', 'Pérez', '40123123', '1990-05-14', 'juan.perez@mail.com', '1123456789', 1, 1, '2025-01-10 10:30'),
+(1, 'Lucía', 'Gómez', '38999876', '1992-11-22', 'lucia.gomez@mail.com', '1134567890', 2, 1, '2025-02-11 14:00'),
+(1, 'Santiago', 'Rodríguez', '40555111', '1985-07-19', 'santi.rod@mail.com', '1145678901', 3, 1, '2025-03-01 09:15'),
+(1, 'Camila', 'López', '42888222', '1998-02-05', 'camilopez@mail.com', '1156789012', 4, 1, '2025-03-15 12:20'),
+(1, 'Martín', 'García', '39222444', '1989-03-08', 'martin.garcia@mail.com', '1167890123', 5, 1, '2025-03-28 19:30'),
+(1, 'Valentina', 'Martínez', '41555444', '1997-12-15', 'vale.martinez@mail.com', '1178901234', 6, 1, '2025-04-12 10:05'),
+(1, 'Agustín', 'Sosa', '40999111', '1995-06-23', 'agus.sosa@mail.com', '1189012345', 7, 1, '2025-04-25 13:40'),
+(1, 'Micaela', 'Ruiz', '42222777', '2000-04-09', 'mica.ruiz@mail.com', '1190123456', 8, 1, '2025-05-02 17:20'),
+(1, 'Tomás', 'Luna', '40000444', '1994-01-19', 'tomas.luna@mail.com', '1201234567', 9, 1, '2025-05-10 09:00'),
+(1, 'Carla', 'Ramos', '41333666', '1991-10-28', 'carla.ramos@mail.com', '1212345678', 10, 1, '2025-05-20 16:45'),
+(1, 'Federico', 'Méndez', '41111000', '1988-09-15', 'fede.mendez@mail.com', '1223456789', 11, 1, '2025-06-01 11:10'),
+(1, 'Milagros', 'Romero', '43333555', '2002-03-25', 'milagros.romero@mail.com', '1234567890', 12, 1, '2025-06-10 15:50'),
+(1, 'Ezequiel', 'Ortiz', '39999333', '1996-11-11', 'eze.ortiz@mail.com', '1245678901', 13, 1, '2025-06-20 20:00'),
+(1, 'Julieta', 'Fernández', '42000444', '1999-09-09', 'julifernandez@mail.com', '1256789012', 14, 1, '2025-07-01 10:45'),
+(1, 'Matías', 'Navarro', '40666777', '1993-02-12', 'matias.navarro@mail.com', '1267890123', 15, 1, '2025-07-10 12:30'),
+(1, 'Paula', 'Torres', '38888444', '1991-08-18', 'paula.torres@mail.com', '1278901234', 16, 1, '2025-07-20 09:15'),
+(1, 'Franco', 'Silva', '40333444', '1990-01-30', 'franco.silva@mail.com', '1289012345', 17, 1, '2025-08-05 17:00'),
+(1, 'Antonella', 'Flores', '41888666', '1998-05-14', 'antonella.flores@mail.com', '1290123456', 18, 1, '2025-08-15 11:45'),
+(1, 'Nicolás', 'Morales', '39555333', '1992-07-22', 'nico.morales@mail.com', '1301234567', 19, 1, '2025-08-20 19:10'),
+(1, 'Sofía', 'Vega', '40999222', '1997-10-03', 'sofia.vega@mail.com', '1312345678', 20, 1, '2025-08-25 14:55');
+
+INSERT INTO preferencias (descripcion) VALUES
+('Películas de acción'),
+('Películas románticas'),
+('Ciencia ficción'),
+('Comedia'),
+('Terror'),
+('Dramas históricos'),
+('Animación'),
+('Documentales'),
+('Superhéroes'),
+('Thriller'),
+('Aventura'),
+('Cine independiente'),
+('Musicales'),
+('Cine nacional'),
+('Crimen'),
+('Fantástico'),
+('Suspenso psicológico'),
+('Biográficas'),
+('Deportes'),
+('Cortometrajes');
+
+
+INSERT INTO detalles_preferencias (id_cliente, id_preferencia) VALUES
+(1, 3),
+(1, 10),
+(2, 2),
+(2, 7),
+(3, 1),
+(3, 11),
+(4, 4),
+(4, 9),
+(5, 5),
+(6, 3),
+(7, 8),
+(8, 1),
+(9, 6),
+(10, 10),
+(11, 13),
+(12, 12),
+(13, 16),
+(14, 5),
+(15, 2),
+(16, 19),
+(17, 18),
+(18, 3),
+(19, 15),
+(20, 9);
+
+INSERT INTO tipos_membresia (nombre, descripcion) VALUES
+('Básica', 'Acceso limitado a beneficios del cine'),
+('Premium', 'Acceso total a todos los beneficios disponibles'),
+('Familiar', 'Incluye acceso grupal y beneficios compartidos'),
+('Estudiante', 'Descuento especial para estudiantes registrados'),
+('Corporativa', 'Para empresas que compran membresías grupales');
+
+INSERT INTO membresias (nombre, descripcion, id_tipo_membresia, precio, duracion_meses, fecha_creacion, estado) VALUES
+('CineClub Básico', 'Acceso a descuentos en entradas y combos.', 1, 2500.00, 6, '2025-01-01 10:00', 'Activo'),
+('CineClub Premium', 'Incluye entradas 2x1, descuentos y eventos exclusivos.', 2, 5500.00, 12, '2025-01-01 10:00', 'Activo'),
+('CineClub Familiar', 'Permite hasta 4 personas, descuentos en snacks y combos.', 3, 7200.00, 12, '2025-01-01 10:00', 'Activo'),
+('CineClub Estudiante', 'Descuento especial del 30% en entradas con credencial válida.', 4, 1800.00, 6, '2025-01-01 10:00', 'Activo'),
+('CineClub Corporativo', 'Beneficios empresariales para grupos de empleados.', 5, 15000.00, 12, '2025-01-01 10:00', 'Activo'),
+('CineClub Kids', 'Descuentos en funciones animadas y menú infantil.', 1, 1200.00, 6, '2025-01-01 10:00', 'Activo'),
+('CineClub Platinum', 'Acceso ilimitado a películas y eventos VIP.', 2, 9800.00, 12, '2025-01-01 10:00', 'Activo'),
+('CineClub Senior', 'Descuentos especiales para mayores de 60 años.', 1, 1600.00, 12, '2025-01-01 10:00', 'Activo'),
+('CineClub Weekend', 'Promociones y beneficios solo fines de semana.', 1, 2000.00, 6, '2025-01-01 10:00', 'Activo'),
+('CineClub Unlimited', 'Acceso libre a todas las funciones disponibles.', 2, 12000.00, 12, '2025-01-01 10:00', 'Activo');
+
+INSERT INTO membresia_beneficios (id_membresia, nombre, descripcion, tipo) VALUES
+(1, 'Descuento del 10%', 'Descuento en entradas cualquier día.', 'Descuento'),
+(1, '2x1 Martes', 'Dos entradas al precio de una los martes.', 'Promoción'),
+(2, 'Acceso a Avant Premiere', 'Entrada exclusiva a estrenos especiales.', 'Evento'),
+(2, 'Combo Gratis', 'Un combo pequeño gratis por mes.', 'Beneficio'),
+(3, 'Descuento Familiar', '30% en entradas para grupos de 4.', 'Descuento'),
+(4, 'Descuento Estudiante', '30% en entradas presentando credencial.', 'Descuento'),
+(5, 'Entradas Corporativas', '10 entradas mensuales para la empresa.', 'Beneficio'),
+(6, 'Entrada Infantil Gratis', 'Una entrada infantil gratuita al mes.', 'Beneficio'),
+(7, 'Sala VIP', 'Acceso a salas exclusivas con asientos reclinables.', 'Premium'),
+(8, 'Snacks Gratis', 'Popcorn mediano gratis los miércoles.', 'Promoción'),
+(9, 'Descuento Finde', '20% de descuento viernes a domingo.', 'Descuento'),
+(10, 'Acceso Total', 'Entrada ilimitada a todas las funciones.', 'Premium');
+
+INSERT INTO cliente_membresia (id_cliente, id_membresia, estado, fecha_inicio, fecha_fin) VALUES
+(1, 1, 'Activa', '2025-01-10', '2025-07-10'),
+(2, 2, 'Activa', '2025-02-15', '2026-02-15'),
+(3, 3, 'Activa', '2025-03-01', '2026-03-01'),
+(4, 4, 'Activa', '2025-03-20', '2025-09-20'),
+(5, 5, 'Activa', '2025-04-05', '2026-04-05'),
+(6, 6, 'Activa', '2025-04-10', '2025-10-10'),
+(7, 7, 'Activa', '2025-04-15', '2026-04-15'),
+(8, 8, 'Activa', '2025-05-01', '2026-05-01'),
+(9, 9, 'Activa', '2025-05-10', '2025-11-10'),
+(10, 10, 'Activa', '2025-05-20', '2026-05-20'),
+(11, 2, 'Activa', '2025-06-01', '2026-06-01'),
+(12, 4, 'Activa', '2025-06-15', '2025-12-15'),
+(13, 3, 'Activa', '2025-07-01', '2026-07-01'),
+(14, 1, 'Activa', '2025-07-10', '2026-01-10'),
+(15, 5, 'Activa', '2025-07-20', '2026-07-20'),
+(16, 6, 'Activa', '2025-08-01', '2026-02-01'),
+(17, 7, 'Activa', '2025-08-10', '2026-08-10'),
+(18, 8, 'Activa', '2025-08-15', '2026-08-15'),
+(19, 9, 'Activa', '2025-08-20', '2026-02-20'),
+(20, 10, 'Activa', '2025-08-25', '2026-08-25');
+
+INSERT INTO suscripciones_estados (descripcion) VALUES
+('Activa'),
+('Pendiente de pago'),
+('Cancelada'),
+('Expirada'),
+('Suspendida');
+
+
+INSERT INTO suscripciones (id_cliente_membresia, monto, fecha_inicio, fecha_fin, id_estado_suscripcion) VALUES
+(1, 2500.00, '2025-01-10', '2025-07-10', 1),
+(2, 5500.00, '2025-02-15', '2026-02-15', 1),
+(3, 7200.00, '2025-03-01', '2026-03-01', 1),
+(4, 1800.00, '2025-03-20', '2025-09-20', 1),
+(5, 15000.00, '2025-04-05', '2026-04-05', 1),
+(6, 1200.00, '2025-04-10', '2025-10-10', 1),
+(7, 9800.00, '2025-04-15', '2026-04-15', 1),
+(8, 1600.00, '2025-05-01', '2026-05-01', 1),
+(9, 2000.00, '2025-05-10', '2025-11-10', 1),
+(10, 12000.00, '2025-05-20', '2026-05-20', 1);
+
+
+INSERT INTO suscripciones_pagos (id_suscripcion, fecha_pago, monto, id_metodo_pago, nro_operacion, estado_pago) VALUES
+(1, '2025-01-10', 2500.00, 1, 'OP123456', 'Completado'),
+(2, '2025-02-15', 5500.00, 2, 'OP223456', 'Completado'),
+(3, '2025-03-01', 7200.00, 3, 'OP323456', 'Completado'),
+(4, '2025-03-20', 1800.00, 1, 'OP423456', 'Completado'),
+(5, '2025-04-05', 15000.00, 4, 'OP523456', 'Completado'),
+(6, '2025-04-10', 1200.00, 1, 'OP623456', 'Completado'),
+(7, '2025-04-15', 9800.00, 2, 'OP723456', 'Completado'),
+(8, '2025-05-01', 1600.00, 3, 'OP823456', 'Completado'),
+(9, '2025-05-10', 2000.00, 4, 'OP923456', 'Completado'),
+(10, '2025-05-20', 12000.00, 2, 'OP1023456', 'Completado');
+
+
+INSERT INTO pagos (monto, fecha_pago, estado, id_metodo_pago, descripcion) VALUES
+(2500.00, '2025-01-10 10:30', 'Completado', 1, 'Pago membresía CineClub Básico'),
+(5500.00, '2025-02-15 12:00', 'Completado', 2, 'Pago membresía CineClub Premium'),
+(7200.00, '2025-03-01 09:00', 'Completado', 3, 'Pago membresía CineClub Familiar'),
+(1800.00, '2025-03-20 11:45', 'Completado', 1, 'Pago membresía CineClub Estudiante'),
+(15000.00, '2025-04-05 14:10', 'Completado', 4, 'Pago membresía CineClub Corporativo'),
+(1200.00, '2025-04-10 16:30', 'Completado', 1, 'Pago membresía CineClub Kids'),
+(9800.00, '2025-04-15 18:00', 'Completado', 2, 'Pago membresía CineClub Platinum'),
+(1600.00, '2025-05-01 10:00', 'Completado', 3, 'Pago membresía CineClub Senior'),
+(2000.00, '2025-05-10 15:00', 'Completado', 4, 'Pago membresía CineClub Weekend'),
+(12000.00, '2025-05-20 17:00', 'Completado', 2, 'Pago membresía CineClub Unlimited');
+
+INSERT INTO detalles_pagos (id_pago, monto, descripcion) VALUES
+(1, 2500.00, 'Pago completo membresía básica'),
+(2, 5500.00, 'Pago completo membresía premium'),
+(3, 7200.00, 'Pago completo membresía familiar'),
+(4, 1800.00, 'Pago completo membresía estudiante'),
+(5, 15000.00, 'Pago completo membresía corporativa'),
+(6, 1200.00, 'Pago completo membresía kids'),
+(7, 9800.00, 'Pago completo membresía platinum'),
+(8, 1600.00, 'Pago completo membresía senior'),
+(9, 2000.00, 'Pago completo membresía weekend'),
+(10, 12000.00, 'Pago completo membresía unlimited');
+
+INSERT INTO tipos_productos (nombre, descripcion) VALUES
+('Snack', 'Productos salados o dulces para consumir durante la película'),
+('Bebida', 'Bebidas frías o calientes'),
+('Combo', 'Combinación de productos a precio promocional'),
+('Merchandising', 'Artículos promocionales de películas'),
+('Otro', 'Productos varios del cine');
+
+INSERT INTO marcas (nombre, descripcion) VALUES
+('Coca-Cola', 'Bebidas gaseosas y refrescos'),
+('Pepsi', 'Bebidas y snacks'),
+('Lay’s', 'Snacks de papa y otros productos'),
+('M&M’s', 'Caramelos y chocolates'),
+('CineSnack', 'Marca interna del cine'),
+('Disney', 'Productos oficiales de Disney'),
+('Warner Bros', 'Merchandising oficial de Warner'),
+('Marvel', 'Productos y figuras coleccionables'),
+('DC Comics', 'Artículos de superhéroes DC'),
+('Nestlé', 'Chocolates y golosinas');
+
+INSERT INTO estados_productos (descripcion) VALUES
+('Disponible'),
+('Sin stock'),
+('Descontinuado'),
+('En reposición'),
+('Promocional');
+
+INSERT INTO productos (nombre, descripcion, precio, stock, unidad_medida, id_tipo_producto, id_marca, id_estado_producto) VALUES
+('Popcorn Grande', 'Baldes grandes de pochoclo salado o dulce', 2500.00, 80, 'unidad', 1, 5, 1),
+('Popcorn Mediano', 'Baldes medianos de pochoclo', 1900.00, 100, 'unidad', 1, 5, 1),
+('Coca-Cola 500ml', 'Bebida gaseosa fría', 1200.00, 120, 'botella', 2, 1, 1),
+('Pepsi 500ml', 'Bebida gaseosa fría', 1100.00, 90, 'botella', 2, 2, 1),
+('Agua Mineral 500ml', 'Agua sin gas', 900.00, 75, 'botella', 2, 10, 1),
+('Nachos con queso', 'Nachos con cheddar fundido', 1800.00, 60, 'unidad', 1, 5, 1),
+('Combo Pareja', '2 entradas + 2 gaseosas + 1 popcorn grande', 7000.00, 30, 'combo', 3, 5, 1),
+('Combo Familiar', '4 entradas + 4 gaseosas + 2 popcorn grandes', 13000.00, 15, 'combo', 3, 5, 1),
+('Llavero Marvel', 'Llavero metálico con logo Avengers', 1500.00, 40, 'unidad', 4, 8, 1),
+('Vaso Batman', 'Vaso coleccionable con diseño de Batman', 2000.00, 50, 'unidad', 4, 9, 1),
+('Chocolate M&M’s', 'Bolsa de M&M’s 150g', 1300.00, 60, 'unidad', 1, 4, 1),
+('Barra KitKat', 'Barra de chocolate KitKat 45g', 900.00, 70, 'unidad', 1, 10, 1),
+('Coca-Cola 1L', 'Botella grande de Coca-Cola', 2000.00, 40, 'botella', 2, 1, 1),
+('Gomitas Disney', 'Paquete de gomitas temáticas de películas Disney', 1200.00, 30, 'paquete', 1, 6, 1),
+('Combo Nocturno', 'Entrada + popcorn + bebida', 4800.00, 25, 'combo', 3, 5, 1);
+
+INSERT INTO tickets (id_funcion, id_asiento, fecha, precio, estado) VALUES
+(1, 1, '2025-01-12 15:00:00', 3500.00, 'Emitido'),
+(1, 2, '2025-01-12 15:00:00', 3500.00, 'Emitido'),
+(2, 3, '2025-02-10 18:00:00', 4000.00, 'Emitido'),
+(3, 4, '2025-03-05 21:00:00', 4200.00, 'Emitido'),
+(4, 5, '2025-04-07 19:30:00', 4800.00, 'Cancelado'),
+(5, 6, '2025-05-01 16:00:00', 4500.00, 'Emitido'),
+(6, 7, '2025-06-20 20:00:00', 3800.00, 'Emitido'),
+(7, 8, '2025-07-10 22:00:00', 4000.00, 'Emitido'),
+(8, 9, '2025-08-05 17:00:00', 4700.00, 'Emitido'),
+(9, 10, '2025-09-02 20:30:00', 3900.00, 'Emitido');
+
+INSERT INTO reservas (id_cliente, id_funcion, fecha_reserva, fecha_vencimiento, estado) VALUES
+(1, 1, '2025-01-10 13:00:00', '2025-01-11 23:59:59', 'Confirmada'),
+(2, 2, '2025-02-08 16:00:00', '2025-02-09 23:59:59', 'Confirmada'),
+(3, 3, '2025-03-01 11:30:00', '2025-03-03 23:59:59', 'Vencida'),
+(4, 4, '2025-04-05 10:00:00', '2025-04-06 23:59:59', 'Cancelada'),
+(5, 5, '2025-04-29 15:00:00', '2025-04-30 23:59:59', 'Confirmada'),
+(6, 6, '2025-06-18 12:00:00', '2025-06-19 23:59:59', 'Confirmada'),
+(7, 7, '2025-07-08 18:00:00', '2025-07-09 23:59:59', 'Confirmada'),
+(8, 8, '2025-08-03 17:30:00', '2025-08-04 23:59:59', 'Vencida'),
+(9, 9, '2025-08-30 14:00:00', '2025-08-31 23:59:59', 'Confirmada'),
+(10, 10, '2025-10-13 19:00:00', '2025-10-14 23:59:59', 'Confirmada');
+
+INSERT INTO detalles_reservas (id_reserva, id_asiento) VALUES
+(1, 1),
+(1, 2),
+(2, 3),
+(3, 4),
+(4, 5),
+(5, 6),
+(6, 7),
+(7, 8),
+(8, 9),
+(9, 10),
+(10, 1);
+
+
+INSERT INTO facturas (nro_factura, id_cliente, fecha, monto_total, id_metodo_pago, id_metodo_compra, estado)
+VALUES
+('F-0001', 1, '2025-10-01 14:23:00', 18600.00, 1, 1, 'Pagada'),
+('F-0002', 2, '2025-10-02 16:45:00', 8900.00, 2, 2, 'Pendiente'),
+('F-0003', 3, '2025-10-03 18:12:00', 21500.00, 3, 1, 'Pagada'),
+('F-0004', 4, '2025-10-04 12:10:00', 6300.00, 1, 3, 'Pagada'),
+('F-0005', 5, '2025-10-05 19:40:00', 4500.00, 2, 2, 'Cancelada'),
+('F-0006', 6, '2025-10-06 17:00:00', 15000.00, 1, 1, 'Pagada'),
+('F-0007', 7, '2025-10-07 13:30:00', 7200.00, 3, 2, 'Pendiente'),
+('F-0008', 8, '2025-10-08 15:55:00', 8900.00, 1, 3, 'Pagada'),
+('F-0009', 9, '2025-10-09 19:20:00', 13400.00, 2, 1, 'Pagada'),
+('F-0010', 10, '2025-10-10 21:00:00', 9800.00, 1, 2, 'Pendiente');
+
+INSERT INTO detalles_facturas (id_factura, cantidad, descripcion, precio_unitario, subtotal, id_producto, id_ticket) VALUES
+-- FACTURA 1: compra de productos
+(1, 2, 'Popcorn Grande', 2500.00, 5000.00, 1, NULL),
+(1, 1, 'Coca-Cola 500ml', 1200.00, 1200.00, 3, NULL),
+(1, 2, 'Nachos con queso', 1800.00, 3600.00, 6, NULL),
+(1, 1, 'Ticket función "Oppenheimer"', 3500.00, 3500.00, NULL, 1),
+
+-- FACTURA 2: solo tickets
+(2, 2, 'Ticket función "Barbie"', 4000.00, 8000.00, NULL, 2),
+
+-- FACTURA 3: tickets + productos
+(3, 1, 'Ticket función "Dune: Parte Dos"', 4200.00, 4200.00, NULL, 3),
+(3, 2, 'Coca-Cola 500ml', 1200.00, 2400.00, 3, NULL),
+(3, 2, 'Popcorn Mediano', 1900.00, 3800.00, 2, NULL),
+
+-- FACTURA 4: productos
+(4, 3, 'Agua Mineral 500ml', 900.00, 2700.00, 5, NULL),
+(4, 2, 'Chocolate M&M’s', 1300.00, 2600.00, 11, NULL),
+
+-- FACTURA 5: cancelada (tickets anulados)
+(5, 1, 'Ticket función "Killers of the Flower Moon"', 4800.00, 4800.00, NULL, 5),
+
+-- FACTURA 6: evento + snack
+(6, 1, 'Ticket función "Jojo Rabbit"', 108.00, 108.00, NULL, 6),  -- ajusta precio real
+(6, 2, 'Popcorn Grande', 2500.00, 5000.00, 1, NULL);
+
+
+
+INSERT INTO tipos_promociones (nombre, descripcion) VALUES
+('Descuento por entrada', 'Descuento aplicado al valor de la entrada'),
+('Combo', 'Promoción de combos de snacks y entradas'),
+('Membresía', 'Beneficios o descuentos para miembros del cine'),
+('Temporada', 'Promociones según temporada o festividades'),
+('Especial de película', 'Descuento sobre películas específicas');
+
+INSERT INTO promociones (nombre, descripcion, fecha_inicio, fecha_fin, id_tipo_promocion, estado, condiciones) VALUES
+('Promo Avengers', '10% de descuento en entradas para Avengers', '2025-10-01', '2025-10-15', 1, 'Activa', 'Válido solo para salas 1 y 2'),
+('Combo Dune', 'Entrada + Popcorn mediano + bebida', '2025-10-05', '2025-10-20', 2, 'Activa', 'No acumulable con otras promociones'),
+('Membresía Oro', '15% de descuento a miembros Oro', '2025-10-01', '2025-12-31', 3, 'Activa', 'Solo clientes con membresía Oro'),
+('Halloween 2025', 'Descuento del 20% en películas de terror', '2025-10-25', '2025-10-31', 4, 'Activa', 'Solo películas de terror'),
+('Estreno Barbie', 'Promoción de estreno Barbie', '2025-11-01', '2025-11-07', 5, 'Activa', 'Aplica solo en salas 3 y 4'),
+('Promo Spider-Man', '2x1 entradas Spider-Man', '2025-11-10', '2025-11-20', 1, 'Activa', 'Solo días lunes y martes'),
+('Combo Familiar', 'Combo de 4 entradas + 4 snacks', '2025-11-01', '2025-12-31', 2, 'Activa', 'Solo clientes no miembros'),
+('Membresía Plata', '10% de descuento para miembros Plata', '2025-10-01', '2025-12-31', 3, 'Activa', 'Aplica solo a entradas regulares'),
+('Promo Oppenheimer', '15% descuento entradas Oppenheimer', '2025-10-15', '2025-10-30', 5, 'Activa', 'Válido solo sala VIP'),
+('Combo Nocturno', 'Entrada + popcorn + bebida nocturna', '2025-10-20', '2025-11-10', 2, 'Activa', 'Aplica solo funciones después de las 20:00');
+
+INSERT INTO detalles_promociones (id_promocion, id_pelicula, id_tipo_sala, id_membresia, valor_descuento) VALUES
+(1, 1, 1, NULL, 500.00),
+(2, 2, 2, NULL, 1200.00),
+(3, NULL, NULL, 1, 15.00),
+(4, 3, NULL, NULL, 20.00),
+(5, 4, 3, NULL, 700.00),
+(6, 5, 1, NULL, 4000.00),
+(7, NULL, NULL, NULL, 3000.00),
+(8, NULL, NULL, 2, 10.00),
+(9, 6, 4, NULL, 1500.00),
+(10, 7, 2, NULL, 1800.00);
+
+INSERT INTO tipos_empleados (nivel, puesto, descripcion) VALUES
+('Junior', 'Cajero', 'Atiende cajas y ventas de entradas y snacks'),
+('Junior', 'Vendedor', 'Vende productos del kiosco'),
+('Senior', 'Supervisor', 'Supervisa las operaciones del turno'),
+('Senior', 'Encargado de Sala', 'Administra salas y funciones'),
+('Manager', 'Gerente General', 'Responsable de toda la operación del cine'),
+('Junior', 'Limpieza', 'Mantiene la limpieza del cine'),
+('Junior', 'Seguridad', 'Control de accesos y seguridad interna'),
+('Senior', 'Coordinador de Eventos', 'Organiza funciones especiales'),
+('Junior', 'Promociones', 'Atiende promociones y membresías'),
+('Senior', 'Administrador IT', 'Gestión de sistemas del cine');
+
+INSERT INTO empleados (nombre, apellido, nro_documento, id_tipo_documento, email, telefono, id_tipo_empleado, salario, id_direccion, fecha_ingreso, estado) VALUES
+('Juan', 'Pérez', '12345678', 1, 'juan.perez@email.com', '1122334455', 1, 65000.00, 1, '2024-01-15', 'Activo'),
+('María', 'Gómez', '23456789', 2, 'maria.gomez@email.com', '1122334466', 2, 62000.00, 2, '2024-02-01', 'Activo'),
+('Carlos', 'Rodríguez', '34567890', 1, 'carlos.rodriguez@email.com', '1122334477', 3, 90000.00, 3, '2023-11-20', 'Activo'),
+('Ana', 'López', '45678901', 2, 'ana.lopez@email.com', '1122334488', 4, 88000.00, 4, '2023-12-05', 'Activo'),
+('Luis', 'Martínez', '56789012', 1, 'luis.martinez@email.com', '1122334499', 5, 150000.00, 5, '2023-10-10', 'Activo'),
+('Sofía', 'Fernández', '67890123', 2, 'sofia.fernandez@email.com', '1122334500', 6, 50000.00, 6, '2024-03-01', 'Activo'),
+('Diego', 'Torres', '78901234', 1, 'diego.torres@email.com', '1122334511', 7, 55000.00, 7, '2024-03-15', 'Activo'),
+('Lucía', 'García', '89012345', 2, 'lucia.garcia@email.com', '1122334522', 8, 80000.00, 8, '2024-01-30', 'Activo'),
+('Martín', 'Sánchez', '90123456', 1, 'martin.sanchez@email.com', '1122334533', 9, 60000.00, 9, '2024-02-20', 'Activo'),
+('Valentina', 'Ruiz', '01234567', 2, 'valentina.ruiz@email.com', '1122334544', 10, 95000.00, 10, '2023-12-15', 'Activo');
+
+INSERT INTO turnos_empleados (nombre, hora_inicio, hora_fin) VALUES
+('Mañana', '08:00:00', '14:00:00'),
+('Tarde', '14:00:00', '20:00:00'),
+('Noche', '20:00:00', '02:00:00'),
+('Turno Completo', '08:00:00', '20:00:00'),
+('Turno Flexible', '10:00:00', '18:00:00'),
+('Turno Especial', '18:00:00', '02:00:00');
+
+INSERT INTO salas_empleados (id_sala, id_empleado, id_turno) VALUES
+(1, 1, 1),
+(1, 2, 1),
+(2, 3, 2),
+(2, 4, 2),
+(3, 5, 3),
+(3, 6, 3),
+(4, 7, 1),
+(4, 8, 2),
+(5, 9, 3),
+(5, 10, 2);
+
+
+INSERT INTO clientes (id_tipo_documento, nombre, apellido, nro_documento, fecha_nacimiento, email, telefono, id_direccion, id_estado_cliente, fecha_registro)
+VALUES
+(1, 'Lucas', 'Gómez', '12345678', '1990-01-01', 'lucas@gmail.com', '111111111', 1, 1, GETDATE()),
+(1, 'Martina', 'López', '23456789', '1992-05-10', 'martina@gmail.com', '222222222', 1, 1, GETDATE()),
+(1, 'Pedro', 'Fernández', '34567890', '1985-09-21', 'pedro@gmail.com', '333333333', 1, 1, GETDATE()),
+(1, 'Ana', 'Ramírez', '98765432', '1995-07-14', 'ana@gmail.com', '444444444', 1, 1, GETDATE());
+
+INSERT INTO cliente_membresia (id_cliente, id_membresia, estado, fecha_inicio, fecha_fin)
+VALUES (4, 1, 'Activa', GETDATE(), DATEADD(MONTH, 12, GETDATE()));
+
+DECLARE @anioActual INT = YEAR(GETDATE());
+
+INSERT INTO facturas (nro_factura, id_cliente, fecha, monto_total, id_metodo_pago, id_metodo_compra, estado)
+VALUES
+('F0001', 21, DATEFROMPARTS(@anioActual, 3, 15), 15000, 1, 1, 'Pagada'),
+('F0002', 22, DATEFROMPARTS(@anioActual, 5, 10), 12000, 1, 1, 'Pagada'),
+('F0003', 23, DATEFROMPARTS(@anioActual, 8, 25), 8000, 2, 2, 'Pagada');
+
+INSERT INTO detalles_facturas (id_factura, cantidad, descripcion, precio_unitario, subtotal)
+VALUES
+(11, 2, 'Combo Palomitas + Gaseosa', 2500, 5000),
+(11, 3, 'Entradas 3D', 3333, 10000),
+(12, 4, 'Entradas 2D', 3000, 12000),
+(13, 2, 'Entradas IMAX', 4000, 8000);
+
+
+
+
+
+
+
+
+
+
+
+
+

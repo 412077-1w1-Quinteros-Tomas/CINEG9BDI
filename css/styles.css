@@ -7,7 +7,6 @@ body {
   color: white;
 }
 
-/* 🔸 Texto del menú superior */
 .texto-elegante {
   display: inline-block;
   position: relative;
@@ -42,7 +41,6 @@ body {
   text-shadow: 0 0 10px #ffffff, 0 0 20px #ffffff;
 }
 
-/* 🔹 Tarjetas de responsables */
 .responsable-card {
   height: 250px;
   display: flex;

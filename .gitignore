@@ -1,0 +1,79 @@
+##############################
+# ⚙️ ARCHIVOS DE VISUAL STUDIO / .NET
+##############################
+bin/
+obj/
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Logs y configuración local
+*.log
+*.tlog
+*.vspscc
+*.vssscc
+*.dbmdl
+
+# Caches
+_ReSharper*/
+*.ncb
+*.opensdf
+*.sdf
+*.cachefile
+*.db
+*.bak
+*.Backup
+*.tmp
+*.temp
+*.pid
+
+##############################
+# 📦 ENTORNOS DE NODE Y FRONTEND
+##############################
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+##############################
+# 🧠 CONFIGURACIÓN LOCAL
+##############################
+*.env
+.env.*
+secrets.json
+appsettings.Development.json
+launchSettings.json
+
+##############################
+# 🖼️ COMPILADOS, TEMPORALES Y OUTPUTS
+##############################
+dist/
+build/
+coverage/
+*.exe
+*.dll
+*.pdb
+*.cache
+*.manifest
+*.zip
+*.7z
+
+##############################
+# 💾 SISTEMA OPERATIVO
+##############################
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Linux
+*~

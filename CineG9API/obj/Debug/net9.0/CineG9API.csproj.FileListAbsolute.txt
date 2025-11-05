@@ -40,3 +40,4 @@ C:\Users\Tomi\CINEG9BDI\CineG9API\obj\Debug\net9.0\ref\CineG9API.dll
 C:\Users\Tomi\CINEG9BDI\CineG9API\bin\Debug\net9.0\Swashbuckle.AspNetCore.Swagger.dll
 C:\Users\Tomi\CINEG9BDI\CineG9API\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\Tomi\CINEG9BDI\CineG9API\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\Tomi\CINEG9BDI\CineG9API\obj\Debug\net9.0\CineG9API.sourcelink.json

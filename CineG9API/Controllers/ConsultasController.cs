@@ -8,14 +8,12 @@ namespace CineG9API.Controllers
     [Route("api/[controller]")]
     public class ConsultasController : ControllerBase
     {
-        // ✅ Ajustá este valor según tu servidor
         private readonly string _connectionString =
             "Data Source=BOSGAME-5OPCE\\SQLEXPRESS;Initial Catalog=BDIG9CINE;Integrated Security=True;TrustServerCertificate=True;";
 
         [HttpGet("{tipo}")]
         public IActionResult GetConsulta(string tipo)
         {
-            // ✅ Bloque opcional para verificar si la conexión funciona
             try
             {
                 using (var conn = new SqlConnection(_connectionString))
@@ -30,7 +28,6 @@ namespace CineG9API.Controllers
                 return StatusCode(500, "Error de conexión con la base de datos: " + ex.Message);
             }
 
-            // ✅ Switch con las consultas
             string query = tipo switch
             {
                 // 🔹 Consulta 1 – Quinteros Tomás – 412077
@@ -116,28 +113,30 @@ namespace CineG9API.Controllers
 
                 // 🔹 Consulta 3 – Flores Diego – 412317
                 "flores" => @"
-                    SELECT TOP 5 
-                        c.id_cliente, 
-                        CONCAT(c.apellido, ' ', c.nombre) AS Cliente,
-                        YEAR(f.fecha) AS Año,
-                        SUM(df.cantidad) AS [Cant. Productos],
-                        SUM(df.cantidad * df.precio_unitario) AS [Gasto Total],
-                        SUM(df.cantidad * df.precio_unitario) - 
-                        (SELECT AVG(SUM(df2.cantidad * df2.precio_unitario)) 
-                         FROM facturas f2 
-                         JOIN detalles_facturas df2 ON df2.id_factura = f2.id_factura
-                         WHERE YEAR(f2.fecha) = YEAR(GETDATE())
-                         GROUP BY f2.id_cliente) AS Diferencia
-                    FROM clientes c
-                    JOIN facturas f ON f.id_cliente = c.id_cliente
-                    JOIN detalles_facturas df ON df.id_factura = f.id_factura
-                    WHERE YEAR(f.fecha) = YEAR(GETDATE())
-                      AND c.id_cliente NOT IN (SELECT id_cliente FROM clientes_membresia)
-                      AND c.id_cliente NOT IN (
-                        SELECT f2.id_cliente FROM facturas f2 WHERE YEAR(f2.fecha) < YEAR(GETDATE())
-                      )
-                    GROUP BY c.id_cliente, c.apellido, c.nombre, YEAR(f.fecha)
-                    ORDER BY [Cant. Productos] DESC;",
+SELECT TOP 5
+    c.id_cliente, 
+    CONCAT(c.apellido, ' ', c.nombre) AS Cliente,
+    YEAR(f.fecha) AS Año,
+    SUM(df.cantidad) AS [Cant. Productos],
+    SUM(df.cantidad * df.precio_unitario) AS [Gasto Total],
+    SUM(df.cantidad * df.precio_unitario) - promedio_general.PromedioGeneral AS Diferencia
+FROM clientes c
+JOIN facturas f ON f.id_cliente = c.id_cliente
+JOIN detalles_facturas df ON df.id_factura = f.id_factura
+CROSS JOIN (
+    SELECT AVG(TotalCliente) AS PromedioGeneral
+    FROM (
+        SELECT SUM(df2.cantidad * df2.precio_unitario) AS TotalCliente
+        FROM facturas f2
+        JOIN detalles_facturas df2 ON df2.id_factura = f2.id_factura
+        WHERE YEAR(f2.fecha) = YEAR(GETDATE())
+        GROUP BY f2.id_cliente
+    ) AS TotalesPorCliente
+) AS promedio_general
+WHERE YEAR(f.fecha) = YEAR(GETDATE())
+  AND c.id_cliente NOT IN (SELECT id_cliente FROM cliente_membresia)
+GROUP BY c.id_cliente, c.apellido, c.nombre, YEAR(f.fecha), promedio_general.PromedioGeneral
+ORDER BY [Cant. Productos] DESC;",
 
                 // 🔹 Consulta 4 – Dávila Carmen – 412078
                 "davila" => @"

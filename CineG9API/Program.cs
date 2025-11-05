@@ -2,7 +2,6 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ✅ Habilitar CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("PermitirTodo", policy =>
@@ -13,10 +12,8 @@ builder.Services.AddCors(options =>
     });
 });
 
-// Controladores
 builder.Services.AddControllers();
 
-// Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -30,7 +27,6 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-// ✅ Activar CORS antes de los controladores
 app.UseCors("PermitirTodo");
 
 if (app.Environment.IsDevelopment())
@@ -39,7 +35,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Cine Grupo 9 API v1");
-        c.RoutePrefix = string.Empty; // Swagger en raíz
+        c.RoutePrefix = string.Empty; 
     });
 }
 
