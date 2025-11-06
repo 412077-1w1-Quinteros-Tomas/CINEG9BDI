@@ -68,3 +68,107 @@ body {
   color: #555;
 }
 
+.cards-container {
+  display: flex;
+  justify-content: center;   
+  align-items: center;
+  flex-wrap: wrap; 
+  gap: 40px; 
+  margin-top: 20px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+ width: 260px;
+ height: 280px;
+ margin: 0 auto;
+ background-color: #fffdfd;
+ border-radius: 8px;
+ z-index: 1;
+ color: black;
+}
+
+.tools {
+ display: flex;
+ align-items: center;
+ padding: 9px;
+}
+
+.circle {
+ padding: 0 4px;
+}
+
+.box {
+ display: inline-block;
+ align-items: center;
+ width: 10px;
+ height: 10px;
+ padding: 1px;
+ border-radius: 50%;
+}
+
+.red {
+ background-color: #ff605c;
+}
+
+.yellow {
+ background-color: #ffbd44;
+}
+
+.green {
+ background-color: #00ca4e;
+}
+.card__content h2 {
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.card__content p {
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+button {
+  cursor: pointer;
+  font-weight: 700;
+  transition: all 0.2s;
+  padding: 10px 20px;
+  border-radius: 100px;
+  background: #e0e0e0;
+  border: 1px solid transparent;
+  align-items: center;
+  font-size: 15px;
+}
+
+button:hover {
+  background: #ffffff;
+}
+
+button > svg {
+  width: 34px;
+  margin-left: 10px;
+  transition: transform 0.3s ease-in-out;
+}
+
+button:hover svg {
+  transform: translateX(5px);
+}
+
+button:active {
+  transform: scale(0.95);
+}
+.consultaSelecct
+{
+ cursor: pointer;
+  font-weight: 700;
+  transition: all 0.2s;
+  padding: 10px 20px;
+  border-radius: 100px;
+  background: #e0e0e0;
+  border: 1px solid transparent;
+  align-items: center;
+  font-size: 15px;
+}

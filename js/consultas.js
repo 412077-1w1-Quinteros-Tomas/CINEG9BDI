@@ -7,7 +7,7 @@ Solo se incluyen clientes con suscripciones pagadas en meses pares.`,
   ferreyra: `Parte A: Crear una vista que muestre para cada género la cantidad total de tickets vendidos, funciones y recaudación del año 2025.
 Parte B: Mostrar los géneros cuya recaudación supere el promedio, con descripción, recaudación y cantidad de espectadores.`,
   
-  flores: `Mostrar los 5 clientes que más productos o entradas compraron este año, que nunca compraron en años anteriores y nunca tuvieron membresía. Mostrar el total gastado y la diferencia con el promedio general.`,
+  flores: `Mostrar los clientes que más productos o entradas compraron este año, que nunca compraron en años anteriores y nunca tuvieron membresía. Mostrar el total gastado y la diferencia con el promedio general.`,
   
   davila: `Obtener el nombre y estado de las películas que tuvieron los bloques de horario más frecuentes este mes, considerando solo las de más de 2 horas de duración.`
 };

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CineG9API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+813f5b59444fb28a402df9198614213f5741f726")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dacd72754534d509cce0c7b8793c7263dbfddfb2")]
 [assembly: System.Reflection.AssemblyProductAttribute("CineG9API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CineG9API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
