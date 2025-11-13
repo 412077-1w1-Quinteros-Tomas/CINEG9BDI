@@ -645,11 +645,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Tomi\\CINEG9BDI\\CineG9API\\CineG9API.csproj",
+      "projectUniqueName": "C:\\Users\\Tomi\\CINEG9BDI-1\\CineG9API\\CineG9API.csproj",
       "projectName": "CineG9API",
-      "projectPath": "C:\\Users\\Tomi\\CINEG9BDI\\CineG9API\\CineG9API.csproj",
+      "projectPath": "C:\\Users\\Tomi\\CINEG9BDI-1\\CineG9API\\CineG9API.csproj",
       "packagesPath": "C:\\Users\\Tomi\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Tomi\\CINEG9BDI\\CineG9API\\obj\\",
+      "outputPath": "C:\\Users\\Tomi\\CINEG9BDI-1\\CineG9API\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
